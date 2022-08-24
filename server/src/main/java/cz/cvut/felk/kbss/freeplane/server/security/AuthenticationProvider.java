@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 
+/**
+ * Custom implementation of Spring Security AuthenticationProvider
+ */
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
     private UserDetailsService userDetailsService;
@@ -26,6 +29,13 @@ public class AuthenticationProvider implements org.springframework.security.auth
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Authentication method
+     *
+     * @param authentication
+     * @return Authentication
+     * @throws AuthenticationException
+     */
     @Override
     @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

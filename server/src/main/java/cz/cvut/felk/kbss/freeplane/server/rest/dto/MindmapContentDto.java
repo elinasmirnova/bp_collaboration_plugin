@@ -2,13 +2,22 @@ package cz.cvut.felk.kbss.freeplane.server.rest.dto;
 
 public class MindmapContentDto extends MindmapInfoDto {
 
-    private String xml;
+    private byte[] xml;
+    private boolean isReadOnly;
 
-    public String getXml() {
+    public byte[] getXml() {
         return xml;
     }
 
-    public void setXml(String xml) {
+    public void setXml(byte[] xml) {
         this.xml = xml;
+    }
+
+    public boolean isReadOnly() {
+        return isReadOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        isReadOnly = readOnly;
     }
 }

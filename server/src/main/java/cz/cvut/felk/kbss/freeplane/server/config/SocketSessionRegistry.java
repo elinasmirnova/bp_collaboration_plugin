@@ -1,54 +1,49 @@
 package cz.cvut.felk.kbss.freeplane.server.config;
 
-import cz.cvut.felk.kbss.freeplane.server.model.SessionInfo;
+import cz.cvut.felk.kbss.freeplane.server.model.MindmapLockInfo;
 import org.springframework.util.Assert;
 
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
+/**
+ * WebSocket sessions registry.
+ */
 public class SocketSessionRegistry {
 
-    private final ConcurrentMap<String, Set<SessionInfo>> userSessionInfoMap = new ConcurrentHashMap();
+    private final ConcurrentMap<Long, MindmapLockInfo> mindmapLockInfoCache = new ConcurrentHashMap();
 
     public SocketSessionRegistry() {
     }
 
-    public Set<SessionInfo> getSessionInfo(String user) {
-        Set<SessionInfo> sessionInfo = this.userSessionInfoMap.get(user);
-        return sessionInfo != null ? sessionInfo : Collections.emptySet();
+    public MindmapLockInfo getMindMapLockInfo(String mindmap) {
+        return this.mindmapLockInfoCache.get(Long.parseLong(mindmap));
     }
 
-    public ConcurrentMap<String, Set<SessionInfo>> getAllSessionIds() {
-        return this.userSessionInfoMap;
-    }
-
-    public void registerSessionId(String user, String sessionId) {
+    /**
+     * Registers WebSocket session after connection
+     *
+     * @param mindMapId mind map ID
+     * @param user      user's e-mail
+     */
+    public void registerSession(String mindMapId, String user) {
         Assert.notNull(user, "User must not be null");
-        Assert.notNull(sessionId, "Session ID must not be null");
-        Set<SessionInfo> sessionInfoSet = this.userSessionInfoMap.get(user);
-        SessionInfo sessionInfo = new SessionInfo(user, sessionId);
-        if (sessionInfoSet != null) {
-            sessionInfoSet.add(sessionInfo);
-            this.userSessionInfoMap.put(user, sessionInfoSet);
-        } else {
-            Set<SessionInfo> newSessionInfoSet = Collections.singleton(sessionInfo);
-            this.userSessionInfoMap.put(user, newSessionInfoSet);
+        Assert.notNull(mindMapId, "MindMap ID must not be null");
+        if (!mindmapLockInfoCache.containsKey(Long.parseLong(mindMapId))) {
+            MindmapLockInfo lockInfo = new MindmapLockInfo(Long.parseLong(mindMapId), user, true);
+            mindmapLockInfoCache.put(Long.parseLong(mindMapId), lockInfo);
         }
     }
 
-    public void unregisterSessionId(String user, String sessionId) {
-        Assert.notNull(user, "User Name must not be null");
-        Assert.notNull(sessionId, "Session ID must not be null");
-
-        Set<SessionInfo> sessionInfoSet = this.userSessionInfoMap.get(user);
-        if (sessionInfoSet != null && sessionInfoSet.size() > 1) {
-            Set<SessionInfo> updatedSessionInfoSet = sessionInfoSet.stream().filter(s -> sessionId.equals(s.getSessionId())).collect(Collectors.toSet());
-            this.userSessionInfoMap.put(user, updatedSessionInfoSet);
-        } else {
-            this.userSessionInfoMap.remove(user);
-        }
+    /**
+     * Registers WebSocket session after disconnection
+     *
+     * @param mindMapId mind map ID
+     * @param user      user's e-mail
+     */
+    public void unregisterSession(String mindMapId, String user) {
+        Assert.notNull(user, "User must not be null");
+        Assert.notNull(mindMapId, "MindMap ID must not be null");
+        mindmapLockInfoCache.remove(Long.parseLong(mindMapId));
     }
 }

@@ -3,6 +3,9 @@ package cz.cvut.felk.kbss.freeplane.server.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Collaboration entity
+ */
 @Entity
 public class Collaboration implements Serializable {
 
@@ -32,7 +35,7 @@ public class Collaboration implements Serializable {
         this.role = role;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "collaborator_id", referencedColumnName = "collaborator_id", nullable = false)
     public Collaborator getCollaborator() {
         return collaborator;
@@ -51,4 +54,10 @@ public class Collaboration implements Serializable {
     public void setMindmap(Mindmap mindmaps) {
         this.mindmap = mindmaps;
     }
+
+    @PreRemove
+    public void deleteCollaboratorCollaboration() {
+        collaborator.getCollaborations().remove(this);
+    }
+
 }

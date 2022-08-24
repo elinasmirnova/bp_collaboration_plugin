@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * JPA Repository for Collaboration entity.
+ */
 @Repository
 public interface CollaborationRepository extends JpaRepository<Collaboration, Long> {
 
-    @Query("SELECT c FROM Collaboration c WHERE c.collaborator.email = :email")
-    Collaboration getCollaborationByCollaboratorEmail(@Param("email") String email);
+    @Query("SELECT c FROM Collaboration c WHERE c.collaborator.email = :email AND c.mindmap.mindmapId = :mindmap")
+    Collaboration getCollaborationByCollaboratorEmailAndMindmap(@Param("email") String email, @Param("mindmap") long mindmap);
 
     @Query("SELECT c FROM Collaboration c WHERE c.mindmap.mindmapId = :mindmapId")
     List<Collaboration> getCollaborationsByMindmap(@Param("mindmapId") long mindmapId);

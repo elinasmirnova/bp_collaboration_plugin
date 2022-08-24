@@ -7,7 +7,7 @@ public class MindmapInfoDto {
 
     private Long mindmapId;
     private String title;
-    private boolean isPublic;
+    private String isPublic;
     private LocalDateTime creationDate;
     private LocalDateTime editionDate;
     private Long lastEditorId;
@@ -31,12 +31,12 @@ public class MindmapInfoDto {
         this.title = title;
     }
 
-    public boolean isPublic() {
+    public String isPublic() {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(String isPublic) {
+        this.isPublic = isPublic;
     }
 
     public LocalDateTime getCreationDate() {

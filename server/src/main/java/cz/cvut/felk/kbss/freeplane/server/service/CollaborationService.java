@@ -7,13 +7,16 @@ import cz.cvut.felk.kbss.freeplane.server.rest.dto.CollaborationDto;
 
 import java.util.List;
 
+/**
+ * Collaboration service interface
+ */
 public interface CollaborationService {
 
     void addCollaboration(Collaborator collaborator, Mindmap mindmap, String role);
 
     void deleteCollaboration(Collaboration collaboration);
 
-    boolean existsCollaborationWithCollaboratorEmail(String email);
+    Collaboration getCollaborationWithCollaboratorEmailForMindmap(String email, Long mindMapId);
 
     List<Collaboration> getCollaborationsByMindmap(long mindmapId);
 
@@ -22,4 +25,4 @@ public interface CollaborationService {
     CollaborationDto convertToDto(Collaboration collaboration);
 
     void updateCollaborationRole(Collaboration collaboration, String role);
- }
+}

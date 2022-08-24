@@ -12,6 +12,9 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Collaboration service implementation
+ */
 @Service
 @Transactional
 public class CollaborationServiceImpl implements CollaborationService {
@@ -44,8 +47,8 @@ public class CollaborationServiceImpl implements CollaborationService {
 
     @Override
     @Transactional
-    public boolean existsCollaborationWithCollaboratorEmail(String email) {
-        return collaborationRepository.getCollaborationByCollaboratorEmail(email) != null;
+    public Collaboration getCollaborationWithCollaboratorEmailForMindmap(String email, Long mindMapId) {
+        return collaborationRepository.getCollaborationByCollaboratorEmailAndMindmap(email, mindMapId);
     }
 
     @Override

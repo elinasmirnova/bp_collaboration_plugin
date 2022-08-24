@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Collaborator entity
+ */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name="collaborator")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "collaborator")
 public class Collaborator implements Serializable {
 
     private Long collaboratorId;
@@ -48,7 +51,7 @@ public class Collaborator implements Serializable {
         this.creationDate = creationDate;
     }
 
-    @OneToMany(mappedBy = "collaborator", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collaborator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Collaboration> getCollaborations() {
         return collaborations;
     }
@@ -63,14 +66,4 @@ public class Collaborator implements Serializable {
         }
         this.collaborations.add(collaboration);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Collaborator{" +
-//                "collaboratorId=" + collaboratorId +
-//                ", email='" + email + '\'' +
-//                ", creationDate=" + creationDate +
-//                ", collaborations=" + collaborations +
-//                '}';
-//    }
 }

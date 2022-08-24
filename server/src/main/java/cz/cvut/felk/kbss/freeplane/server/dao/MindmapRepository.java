@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * JPA Repository for Mindmap entity.
+ */
 @Repository
 public interface MindmapRepository extends JpaRepository<Mindmap, Long> {
 

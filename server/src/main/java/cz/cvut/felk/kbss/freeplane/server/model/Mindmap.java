@@ -6,12 +6,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mind map entity
+ */
 @Entity
 public class Mindmap implements Serializable {
 
     private Long mindmapId;
     private String title;
-    private String xml;
+    private byte[] xml;
     private boolean isPublic;
     private LocalDateTime creationDate;
     private LocalDateTime editionDate;
@@ -44,11 +47,11 @@ public class Mindmap implements Serializable {
 
     @Basic
     @Column(name = "xml")
-    public String getXml() {
+    public byte[] getXml() {
         return xml;
     }
 
-    public void setXml(String xml) {
+    public void setXml(byte[] xml) {
         this.xml = xml;
     }
 
@@ -119,6 +122,10 @@ public class Mindmap implements Serializable {
         this.creator = user;
     }
 
+    @PreRemove
+    public void deleteUsersMindmap() {
+        creator.getMindmaps().remove(this);
+    }
 
     @Override
     public String toString() {

@@ -7,6 +7,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Custom implementation of Spring Security userDetails
+ */
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
     private User user;
@@ -15,6 +18,11 @@ public class UserDetails implements org.springframework.security.core.userdetail
         this.user = user;
     }
 
+    /**
+     * Returns all the user's authorities based on his roles
+     *
+     * @return collection of GrantedAuthority
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();

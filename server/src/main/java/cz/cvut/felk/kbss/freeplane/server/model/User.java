@@ -1,9 +1,11 @@
 package cz.cvut.felk.kbss.freeplane.server.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
+/**
+ * User entity
+ */
 @Entity
 @Table(name = "user")
 @PrimaryKeyJoinColumn(name = "collaborator_id")
@@ -86,17 +88,4 @@ public class User extends Collaborator {
     public void setMindmaps(List<Mindmap> mindmapsByCollaboratorId) {
         this.mindmaps = mindmapsByCollaboratorId;
     }
-
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "firstname='" + firstname + '\'' +
-//                ", lastname='" + lastname + '\'' +
-//                ", password='" + password + '\'' +
-//                ", authenticationType='" + authenticationType + '\'' +
-//                ", authenticatorUri='" + authenticatorUri + '\'' +
-//                ", isAdmin=" + isAdmin +
-//                ", " + super.toString() +
-//                '}';
-//    }
 }

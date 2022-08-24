@@ -9463,7 +9463,7 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
-react-final-form@^6.5.7:
+react-final-form@6.5.7:
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-6.5.7.tgz#0c1098accf0f0011adee5a46076ed1b99ed1b1ea"
   integrity sha512-o7tvJXB+McGiXOILqIC8lnOcX4aLhIBiF/Xi9Qet35b7XOS8R7KL8HLRKTfnZWQJm6MCE15v1U0SFive0NcxyA==
@@ -9485,7 +9485,7 @@ react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-query@^3.34.2:
+react-query@3.34.2:
   version "3.34.2"
   resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.34.2.tgz#ce07b97230575981f98bb8cac7e0f2659c491246"
   integrity sha512-Y817mmZa65kysW5YloRiC6/3zj/S7/dphUOfK4ujqVcKtl7/NkiMqJv3hjnLCS9cYeOA4pU8LmYQCSPQALrkcg==

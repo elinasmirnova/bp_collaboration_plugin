@@ -7,31 +7,34 @@ import cz.cvut.felk.kbss.freeplane.server.rest.dto.MindmapInfoDto;
 
 import java.util.List;
 
+/**
+ * Mind map service interface
+ */
 public interface MindmapService {
 
-      Mindmap findMindmapById(long id);
+    Mindmap findMindmapById(long id);
 
-      void save(Mindmap mindmap);
+    Long save(Mindmap mindmap);
 
-      void update(Mindmap mindmap);
+    void update(Mindmap mindmap);
 
-      void delete(Mindmap mindmap);
+    void delete(Mindmap mindmap);
 
-      List<Mindmap> getAllMindmaps();
+    List<Mindmap> getAllMindmaps();
 
-      boolean hasPermission(Mindmap mindmap, User user);
+    List<Mindmap> getOwnMindmapsByCollaborator(long collaboratorId);
 
-      List<Mindmap> getOwnMindmapsByCollaborator(long collaboratorId);
+    List<Mindmap> getSharedMindmapsByCollaborator(long collaboratorId);
 
-      List<Mindmap> getSharedMindmapsByCollaborator(long collaboratorId);
+    MindmapInfoDto convertToDto(Mindmap mindmap);
 
-      MindmapInfoDto convertToDto(Mindmap mindmap);
+    MindmapContentDto convertToContentDto(Mindmap mindmap);
 
-      MindmapContentDto convertToContentDto(Mindmap mindmap);
+    boolean isCurrentUserMindmapCreator(long mindmapId);
 
-      Mindmap convertToEntity(MindmapInfoDto mindmapDto);
+    boolean isCurrentUserCollaborator(long mindmapId);
 
-      boolean isCurrentUserMindmapCreator(long mindmapId);
+    String getCurrentUserRoleForMindmap(long mindmapId);
 
-      void updateIsPublic(Mindmap mindmap);
+    boolean mindMapTitleExists(String inputTitle);
 }

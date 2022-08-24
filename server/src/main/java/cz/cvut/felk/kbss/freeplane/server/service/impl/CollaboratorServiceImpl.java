@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+/**
+ * Collaborator service implementation
+ */
 @Service
 public class CollaboratorServiceImpl implements CollaboratorService {
 

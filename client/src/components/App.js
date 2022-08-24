@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 // navigation
 import {Routes, Route, useLocation, Navigate} from "react-router-dom";
 // components
-import Home from 'components/Home'
-import Menu from 'components/Menu'
-import Groups from 'components/Groups';
-import Users from 'components/Users';
-import Mindmaps from 'components/Mindmaps';
-import Login from 'components/Login';
-import Signup from 'components/Signup';
-import AddCollaborator from 'components/AddCollaborator';
-import NotFound from 'components/NotFound';
+import Home from 'components/modules/Home'
+import Menu from 'components/ui/Menu'
+import Groups from 'components/modules/Groups';
+import Users from 'components/modules/Users';
+import Mindmaps from 'components/modules/Mindmaps';
+import Login from 'components/modules/Login';
+import Signup from 'components/modules/Signup';
+import AddCollaborator from 'components/modules/AddCollaborator';
+import NotFound from 'components/modules/NotFound';
 // mui
 import Box from '@mui/material/Box';
 
@@ -25,7 +25,6 @@ function App() {
         setRole(localStorage.getItem('role'));
     }, [location.pathname])
 
-    console.log(isAuth)
     return (
         isAuth
             ?
@@ -43,6 +42,7 @@ function App() {
                     {role === 'ADMIN'
                         ?
                         <Routes>
+                            <Route path='/' element={<Navigate to='/home' />} />
                             <Route path='/login' element={<Navigate to='/home' />} />
                             <Route path='/home' element={<Home />} />
                             <Route path='/groups' element={<Groups />} />
@@ -54,6 +54,7 @@ function App() {
                         </Routes>
                         :
                         <Routes>
+                            <Route path='/' element={<Navigate to='/home' />} />
                             <Route path='/login' element={<Navigate to='/home' />} />
                             <Route path='/home' element={<Home />} />
                             <Route path='/mindmaps' element={<Mindmaps />} />
@@ -68,7 +69,8 @@ function App() {
                 minHeight: '100vh'
             }}>
                 <Routes>
-                    <Route path='*' element={<Navigate to='/login' />} />
+                    <Route path='/' element={<Navigate to='/login' />} />
+                    {!role && <Route path='*' element={<Navigate to='/login' />} />}
                     <Route path='/login' element={<Login />} />
                     <Route path='/signup' element={<Signup />} />
                 </Routes>

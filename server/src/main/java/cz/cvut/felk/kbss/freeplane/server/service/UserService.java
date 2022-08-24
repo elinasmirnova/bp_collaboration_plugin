@@ -5,9 +5,12 @@ import cz.cvut.felk.kbss.freeplane.server.rest.dto.UserDto;
 
 import java.util.List;
 
+/**
+ * User service interface
+ */
 public interface UserService {
 
-    User createUser(User user);
+    void createUser(User user);
 
     void deleteUser(User user);
 
@@ -17,14 +20,9 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void changePassword(User user);
-
-    void updateUser(User user);
-
     boolean existsByEmail(String email);
 
     User convertToEntity(UserDto userDto);
 
     UserDto convertToUserDto(User user);
-
 }

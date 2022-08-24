@@ -1,10 +1,15 @@
 package cz.cvut.felk.kbss.freeplane.server.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class MindmapToCreateDto {
 
     private String title;
-    private boolean isPublic;
-    private String xml;
+
+    @JsonProperty("isPublic")
+    private Boolean isPublic;
+
+    private String map;
 
     public String getTitle() {
         return title;
@@ -18,15 +23,15 @@ public class MindmapToCreateDto {
         return isPublic;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
-    public String getXml() {
-        return xml;
+    public String getMap() {
+        return map;
     }
 
-    public void setXml(String xml) {
-        this.xml = xml;
+    public void setMap(String map) {
+        this.map = map;
     }
 }

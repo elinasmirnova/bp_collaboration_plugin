@@ -3,7 +3,6 @@ package cz.cvut.felk.kbss.freeplane.server.config;
 import cz.cvut.felk.kbss.freeplane.server.security.AuthenticationProvider;
 import cz.cvut.felk.kbss.freeplane.server.security.AuthenticationSuccess;
 import cz.cvut.felk.kbss.freeplane.server.service.UserDetailsService;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Security configuration.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -62,7 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .and()
                 .rememberMe()
-                .and().sessionManagement().maximumSessions(1)
         ;
     }
 }

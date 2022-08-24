@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * User REST controller
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/users")
@@ -24,6 +27,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Creating a new user endpoint
+     *
+     * @param userDto user DTO request body
+     * @return HttpStatus code
+     */
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
         if (this.userService.existsByEmail(userDto.getEmail())) {
@@ -37,6 +46,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     * Deleting user endpoint
+     *
+     * @param id user's id path variable
+     * @return HttpStatus code
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
         final User user = this.userService.getUserById(id);
@@ -47,6 +62,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Fetching user endpoint
+     *
+     * @param id user's id path variable
+     * @return user DTO
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
         final User user = this.userService.getUserById(id);
@@ -57,6 +78,11 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
+    /**
+     * Fetching all the users endpoint
+     *
+     * @return collection of user DTO
+     */
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         final List<UserDto> userDtoList;

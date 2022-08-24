@@ -3,6 +3,9 @@ package cz.cvut.felk.kbss.freeplane.server.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Class of custom API response status exceptions.
+ */
 public class ApiResponseStatusException extends ResponseStatusException {
 
     public ApiResponseStatusException(HttpStatus status) {

@@ -12,6 +12,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * User service implementation
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,10 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User createUser(User user) {
+    public void createUser(User user) {
         final String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        return userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -45,7 +48,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserByEmail(email);
     }
 
-
     @Override
     @Transactional
     public User getUserById(long id) {
@@ -55,20 +57,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void changePassword(User user) {
-        final String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    @Transactional
-    public void updateUser(User user) {
-        userRepository.saveAndFlush(user);
     }
 
     @Override

@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Collaboration REST controller.
+ */
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/collaborations")
@@ -32,18 +35,24 @@ public class CollaborationController {
         this.mindmapService = mindmapService;
     }
 
+    /**
+     * Adding a collaborator to the mind map
+     *
+     * @param collaborationDto collaboration DTO request body
+     * @return HTTPStatus code
+     */
     @PostMapping
     public ResponseEntity<Void> addCollaboration(@RequestBody CollaborationDto collaborationDto) {
-        Objects.requireNonNull(collaborationDto.getCollaboratorEmail(), "Input user DTO must not be null");
-        Objects.requireNonNull(collaborationDto.getMindmapId(), "Input user DTO must not be null");
-        Objects.requireNonNull(collaborationDto.getRole(), "Input user DTO must not be null");
+        Objects.requireNonNull(collaborationDto.getCollaboratorEmail(), "Input collaborator email must not be null");
+        Objects.requireNonNull(collaborationDto.getMindmapId(), "Input mindmap id must not be null");
+        Objects.requireNonNull(collaborationDto.getRole(), "Input role must not be null");
 
         if (!SecurityUtils.getCurrentUserDetails().getUser().isAdmin() && !this.mindmapService.isCurrentUserMindmapCreator(collaborationDto.getMindmapId())) {
-            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "");
+            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
 
-        if (collaborationService.existsCollaborationWithCollaboratorEmail(collaborationDto.getCollaboratorEmail())) {
-            throw new ApiResponseStatusException(HttpStatus.CONFLICT, "");
+        if (this.collaborationService.getCollaborationWithCollaboratorEmailForMindmap(collaborationDto.getCollaboratorEmail(), collaborationDto.getMindmapId()) != null) {
+            throw new ApiResponseStatusException(HttpStatus.CONFLICT, "Collaborator with this e-mail already has an access to the mind map with id " + collaborationDto.getMindmapId());
         }
 
         try {
@@ -62,6 +71,12 @@ public class CollaborationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     * Deleting collaboration endpoint.
+     *
+     * @param id collaboration ID
+     * @return HTTPStatus code
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCollaboration(@PathVariable("id") long id) {
         final Collaboration collaboration = getCollaborationWithPreconditions(id);
@@ -74,12 +89,18 @@ public class CollaborationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Fetching collaborations for the mind map endpoint.
+     *
+     * @param mindmapId mind map ID
+     * @return collection of the collaborations and HTTPStatus code
+     */
     @GetMapping("/mindmap/{id}")
     public ResponseEntity<List<CollaborationDto>> getCollaborationsByMindmap(@PathVariable("id") long mindmapId) {
         final List<CollaborationDto> collaborationDtoList;
 
         if (!SecurityUtils.getCurrentUserDetails().getUser().isAdmin() && !this.mindmapService.isCurrentUserMindmapCreator(mindmapId)) {
-            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "");
+            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
 
         try {
@@ -94,6 +115,12 @@ public class CollaborationController {
         return new ResponseEntity<>(collaborationDtoList, HttpStatus.OK);
     }
 
+    /**
+     * Get collaboration by its ID.
+     *
+     * @param id collaboration ID
+     * @return collaboration DTO and HTTPStatus code
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CollaborationDto> getCollaborationById(@PathVariable("id") long id) {
         final CollaborationDto collaborationDto;
@@ -102,11 +129,18 @@ public class CollaborationController {
         try {
             collaborationDto = this.collaborationService.convertToDto(collaboration);
         } catch (Exception e) {
-            throw new ApiResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some error occurred while fetching collaborations for the mindmap with id " + id);
+            throw new ApiResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some error occurred while fetching collaboration with id " + id);
         }
         return new ResponseEntity<>(collaborationDto, HttpStatus.OK);
     }
 
+    /**
+     * Updating role for the collaboration.
+     *
+     * @param id   mind map ID
+     * @param role a new user's role
+     * @return HTTPStatus code
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateCollaborationRole(@PathVariable("id") long id, @RequestParam String role) {
         final Collaboration collaboration = getCollaborationWithPreconditions(id);
@@ -114,7 +148,7 @@ public class CollaborationController {
         try {
             this.collaborationService.updateCollaborationRole(collaboration, role);
         } catch (Exception e) {
-            throw new ApiResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some error occurred while deleting collaboration with id " + id);
+            throw new ApiResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Some error occurred while updating collaboration role for collaboration id " + id);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -127,7 +161,7 @@ public class CollaborationController {
         }
 
         if (!SecurityUtils.getCurrentUserDetails().getUser().isAdmin() && !this.mindmapService.isCurrentUserMindmapCreator(collaboration.getMindmap().getMindmapId())) {
-            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "");
+            throw new ApiResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
 
         return collaboration;

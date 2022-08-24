@@ -1,6 +1,5 @@
 package cz.cvut.felk.kbss.freeplane.server.security;
 
-import cz.cvut.felk.kbss.freeplane.server.model.enums.UserRoleEnum;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -21,13 +20,13 @@ import java.util.Map;
 import static cz.cvut.felk.kbss.freeplane.server.model.enums.UserRoleEnum.ROLE_ADMIN;
 import static cz.cvut.felk.kbss.freeplane.server.model.enums.UserRoleEnum.ROLE_USER;
 
+/**
+ * Success authentication handler
+ */
 public class AuthenticationSuccess implements AuthenticationSuccessHandler {
-
-    //protected Logger logger = Logger.(this.getClass());
 
     private final static String ROLE_USER_ENTRY_ENDPOINT = "rest/v1/homepage";
     private final static String ROLE_ADMIN_ENTRY_ENDPOINT = "rest/v1/admin/dashboard";
-
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -39,10 +38,8 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
         String targetUrl = determineTargetUrl(authentication);
 
         if (httpServletResponse.isCommitted()) {
-//            logger.debug
             return;
         }
-
 
         redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, targetUrl);
         clearAuthenticationAttributes(httpServletRequest);
